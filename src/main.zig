@@ -11,7 +11,10 @@ const SNAKE_SPEED = 3;
 const WINDOW_GRID_SIZE = Vec2(i8){ .x = 32, .y = 32 };
 const SNAKE_GRID_SIZE = WINDOW_GRID_SIZE.plus(&Vec2(i8){ .x = -2, .y = -2 });
 
-const CELL_SIZE = Vec2(u16){ .x = WINDOW_SIZE.x / WINDOW_GRID_SIZE.x, .y = WINDOW_SIZE.y / WINDOW_GRID_SIZE.y };
+const CELL_SIZE = Vec2(u16){
+    .x = WINDOW_SIZE.x / WINDOW_GRID_SIZE.x,
+    .y = WINDOW_SIZE.y / WINDOW_GRID_SIZE.y,
+};
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
@@ -67,7 +70,10 @@ pub fn main() !void {
             if (frame_modulus == 0) {
                 _ = snake_position.pop();
                 const head_position = snake_position.items[0];
-                try snake_position.insert(0, head_position.plus(&snake_direction));
+                try snake_position.insert(
+                    0,
+                    head_position.plus(&snake_direction),
+                );
             }
 
             const head_position = snake_position.items[0];
@@ -85,7 +91,11 @@ pub fn main() !void {
     }
 }
 
-fn draw(font: *const rl.Font, snake_position: []const Vec2(i8), game_over: *const bool) !void {
+fn draw(
+    font: *const rl.Font,
+    snake_position: []const Vec2(i8),
+    game_over: *const bool,
+) !void {
     rl.beginDrawing();
     defer rl.endDrawing();
 
@@ -126,8 +136,19 @@ fn draw(font: *const rl.Font, snake_position: []const Vec2(i8), game_over: *cons
     if (game_over.*) {
         const game_over_font_size = 48;
         const game_over_spacing = 1;
-        rl.drawRectangle(0, 0, WINDOW_SIZE.x, WINDOW_SIZE.y, rl.Color.alpha(rl.Color.black, 0.5));
-        const text_size = rl.measureTextEx(font.*, "GAME OVER", game_over_font_size, game_over_spacing);
+        rl.drawRectangle(
+            0,
+            0,
+            WINDOW_SIZE.x,
+            WINDOW_SIZE.y,
+            rl.Color.alpha(rl.Color.black, 0.5),
+        );
+        const text_size = rl.measureTextEx(
+            font.*,
+            "GAME OVER",
+            game_over_font_size,
+            game_over_spacing,
+        );
         rl.drawTextEx(
             font.*,
             "GAME OVER",
