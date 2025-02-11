@@ -17,7 +17,7 @@ pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     const allocator = gpa.allocator();
 
-    rl.initWindow(960, 960, "Snake");
+    rl.initWindow(WINDOW_SIZE.x, WINDOW_SIZE.y, "Snake");
     defer rl.closeWindow();
 
     rl.setTargetFPS(FRAME_RATE);
